@@ -1,5 +1,6 @@
 {
     "cSpell.enabledFileTypes": {
-        "svelte": false
+        "svelte": false,
+        "typescript": false
     }
 }

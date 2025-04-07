@@ -6,23 +6,57 @@
 		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Checkbox
+		Checkbox,
+		Button
 	} from 'flowbite-svelte';
-	import { analysesMock } from '../scripts/analyses';
+	import { LS_KEY_ANALYSES, LS_KEY_SCOPED, toLocalStorage } from '../lib/localStorageHandles';
 
-	let analysesEnriched = $state(
-		analysesMock.map((a: any) => {
-			a.checked = false;
-			return a;
-		})
-	);
-	$inspect(analysesEnriched);
+	let { analyses } = $props();
+	let allAnalyses = $state(analyses);
+	let globalCheck = $derived.by(() => {
+		return Object.keys(allAnalyses).every((key: string) => allAnalyses[key].selected === true);
+	});
+
+	function checkAllAnalyses(analyses: any, flag: boolean): Object {
+		let keys = Object.keys(analyses);
+		for (let key of keys) {
+			analyses[key].selected = flag;
+		}
+		return analyses;
+	}
+
+	function scopeSelected(): undefined {
+		const scoped = [];
+		for (const [key, value] of Object.entries(allAnalyses)) {
+			// @ts-ignore
+			if (value.selected) {
+				scoped.push(key);
+			}
+		}
+		toLocalStorage(LS_KEY_SCOPED, scoped);
+	}
+
+	$inspect(allAnalyses, globalCheck);
 </script>
 
+<div>
+	<Button size="xs" color="blue" onclick={scopeSelected} href="analyses">Open</Button>
+	<Button size="xs" color="red">Delete</Button>
+</div>
 <Table hoverable={true}>
 	<TableHead>
 		<TableHeadCell class="p-4!">
-			<Checkbox />
+			<form autocomplete="off">
+				<Checkbox
+					checked={globalCheck}
+					onchange={() => {
+						globalCheck = !globalCheck;
+						``;
+						allAnalyses = checkAllAnalyses(allAnalyses, globalCheck);
+						toLocalStorage(LS_KEY_ANALYSES, allAnalyses);
+					}}
+				/>
+			</form>
 		</TableHeadCell>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Status</TableHeadCell>
@@ -32,20 +66,24 @@
 	</TableHead>
 
 	<TableBody tableBodyClass="divide-y">
-		{#each analysesMock as analysis, i}
+		{#each Object.keys(allAnalyses) as key}
 			<TableBodyRow>
 				<TableBodyCell class="p-4!">
-					<Checkbox
-						onclick={() => {
-							analysesEnriched[i].checked = !analysesEnriched[i].checked;
-						}}
-					/>
+					<form autocomplete="off">
+						<Checkbox
+							checked={allAnalyses[key].selected}
+							onchange={() => {
+								allAnalyses[key].selected = !allAnalyses[key].selected;
+								toLocalStorage(LS_KEY_ANALYSES, allAnalyses);
+							}}
+						/>
+					</form>
 				</TableBodyCell>
-				<TableBodyCell>{analysis.name}</TableBodyCell>
-				<TableBodyCell>{analysis.status}</TableBodyCell>
-				<TableBodyCell>{analysis.buildTime}</TableBodyCell>
-				<TableBodyCell>{analysis.resources}</TableBodyCell>
-				<TableBodyCell>{analysis.rest}</TableBodyCell>
+				<TableBodyCell>{allAnalyses[key].name}</TableBodyCell>
+				<TableBodyCell>{allAnalyses[key].status}</TableBodyCell>
+				<TableBodyCell>{allAnalyses[key].buildTime}</TableBodyCell>
+				<TableBodyCell>{allAnalyses[key].resources}</TableBodyCell>
+				<TableBodyCell>{allAnalyses[key].rest}</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 	</TableBody>
