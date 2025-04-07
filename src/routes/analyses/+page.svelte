@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import Header from '../../components/Header.svelte';
 	import Footer from '../../components/Footer.svelte';
+	import Analysis from '../../components/Analysis.svelte';
 	import { Tabs, TabItem } from 'flowbite-svelte';
 	import { LS_KEY_SCOPED, LS_KEY_ANALYSES, fromLocalStorage } from '../../lib/localStorageHandles';
 
@@ -27,11 +28,7 @@
 	<main class="bg-white-500 space-y-4 p-4">
 		<Tabs>
 			{#each scopedAnalyses as analysis}
-				<TabItem open title={analysis.name}>
-					<p class="text-sm text-gray-500 dark:text-gray-400">
-						<b>{analysis.name}</b>
-					</p>
-				</TabItem>
+				<Analysis name={analysis.name} />
 			{/each}
 		</Tabs>
 	</main>
