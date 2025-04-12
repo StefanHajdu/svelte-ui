@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import Header from '../../components/Header.svelte';
 	import Footer from '../../components/Footer.svelte';
-	import Analysis from '../../components/NewAnalysis.svelte';
+	import Analysis from '../../components/Analysis.svelte';
 	import { Tabs } from 'flowbite-svelte';
 	import { LS_KEY_SCOPED, LS_KEY_ANALYSES, fromLocalStorage } from '../../lib/localStorageHandles';
 
