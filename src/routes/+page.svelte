@@ -7,7 +7,7 @@
 	import { LS_KEY_ANALYSES, toLocalStorage } from '$lib/localStorageHandles';
 
 	let { data }: PageProps = $props();
-	let analyses = data[LS_KEY_ANALYSES];
+	let analyses = data;
 	toLocalStorage(LS_KEY_ANALYSES, analyses);
 </script>
 

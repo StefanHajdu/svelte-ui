@@ -10,14 +10,17 @@
 		Button
 	} from 'flowbite-svelte';
 	import { LS_KEY_ANALYSES, LS_KEY_SCOPED, toLocalStorage } from '../lib/localStorageHandles';
+	import { type AnalysesMock } from '$lib/analyses';
 
-	let { analyses } = $props();
-	let allAnalyses = $state(analyses);
+	let analyses = $props();
+	let allAnalyses: AnalysesMock = $state(analyses[LS_KEY_ANALYSES]);
 	let globalCheck = $derived.by(() => {
 		return Object.keys(allAnalyses).every((key: string) => allAnalyses[key].selected === true);
 	});
 
-	function checkAllAnalyses(analyses: any, flag: boolean): Object {
+	$inspect(allAnalyses);
+
+	function checkAllAnalyses(analyses: any, flag: boolean): AnalysesMock {
 		let keys = Object.keys(analyses);
 		for (let key of keys) {
 			analyses[key].selected = flag;
@@ -28,7 +31,6 @@
 	function scopeSelected(): undefined {
 		const scoped = [];
 		for (const [key, value] of Object.entries(allAnalyses)) {
-			// @ts-ignore
 			if (value.selected) {
 				scoped.push(key);
 			}

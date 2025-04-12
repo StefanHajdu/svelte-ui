@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { TabItem } from 'flowbite-svelte';
 	import { NodeInstance } from './nodes/NodeInstance';
-	import Node from '../components/nodes/Node.svelte';
+	import Node from './nodes/Node.svelte';
 
 	let { name } = $props();
 	let nodesInAnalysis = $state([new NodeInstance('Load')]);

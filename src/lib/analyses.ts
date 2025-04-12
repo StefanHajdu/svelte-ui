@@ -1,4 +1,16 @@
-export const analysesMock = {
+interface Analysis {
+	id: string;
+	name: string;
+	status: string;
+	buildTime: string;
+	resources: string;
+	rest: string;
+	selected: boolean;
+}
+
+export type AnalysesMock = Record<string, Analysis>;
+
+export const analysesMock: AnalysesMock = {
 	'id-analysis-#1': {
 		id: 'id-analysis-#1',
 		name: 'Analysis #1',
