@@ -18,8 +18,6 @@
 		return Object.keys(allAnalyses).every((key: string) => allAnalyses[key].selected === true);
 	});
 
-	$inspect(allAnalyses);
-
 	function checkAllAnalyses(analyses: any, flag: boolean): AnalysesMock {
 		let keys = Object.keys(analyses);
 		for (let key of keys) {
@@ -37,8 +35,6 @@
 		}
 		toLocalStorage(LS_KEY_SCOPED, scoped);
 	}
-
-	$inspect(allAnalyses, globalCheck);
 </script>
 
 <div>

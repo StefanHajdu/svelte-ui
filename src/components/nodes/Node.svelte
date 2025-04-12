@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card, Dropdown, DropdownItem, Button } from 'flowbite-svelte';
 	import { DotsHorizontalOutline } from 'flowbite-svelte-icons';
-	import { NodeInstance } from './NodeInstance';
+	import { nodeFactoryMethod } from './NodeInstance';
 
 	let { nodesInAnalysis = $bindable(), node } = $props();
 
@@ -11,7 +11,7 @@
 
 	function insertNextNode() {
 		let nodeIdx = getNodeIdx(node.uuid);
-		let nextNode = new NodeInstance('Filter');
+		let nextNode = nodeFactoryMethod('Filter');
 		nodesInAnalysis.splice(nodeIdx + 1, 0, nextNode);
 	}
 
@@ -25,11 +25,14 @@
 	<div class="flex justify-end">
 		<DotsHorizontalOutline />
 		<Dropdown class="w-36">
-			<DropdownItem onclick={removeNode}>Remove</DropdownItem>
+			{#if node.nodeType !== 'load'}
+				<DropdownItem onclick={removeNode}>Remove</DropdownItem>
+			{/if}
 		</Dropdown>
 	</div>
 	<div class="flex flex-col items-center pb-4">
-		<p>node_id: {node.uuid.slice(-5)}</p>
+		<p>id: {node.uuid.slice(-5)}</p>
+		<p>type: {node.nodeType}</p>
 		<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{node.title}</h5>
 		<span class="text-sm text-gray-500 dark:text-gray-400">SQL Node</span>
 		<div class="mt-4 flex space-x-3 lg:mt-6 rtl:space-x-reverse">
