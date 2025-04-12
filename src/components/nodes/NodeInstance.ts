@@ -5,6 +5,12 @@ export function nodeFactoryMethod(title: string): Node {
 		return new LoadNode(title);
 	} else if (title.toLowerCase() === 'filter') {
 		return new FilterNode(title);
+	} else if (title.toLowerCase() === 'join') {
+		return new JoinNode(title);
+	} else if (title.toLowerCase() === 'add column') {
+		return new AddColumnNode(title);
+	} else if (title.toLowerCase() === 'table') {
+		return new TableNode(title);
 	} else {
 		return new LoadNode(title);
 	}
@@ -36,7 +42,49 @@ class LoadNode extends Node {
 
 class FilterNode extends Node {
 	title: string;
-	nodeType: string = 'filter';
+	nodeType: string = 'sql';
+
+	constructor(title: string) {
+		super();
+		this.title = title;
+	}
+
+	getState(): string {
+		return this.title;
+	}
+}
+
+class JoinNode extends Node {
+	title: string;
+	nodeType: string = 'sql';
+
+	constructor(title: string) {
+		super();
+		this.title = title;
+	}
+
+	getState(): string {
+		return this.title;
+	}
+}
+
+class TableNode extends Node {
+	title: string;
+	nodeType: string = 'visualization';
+
+	constructor(title: string) {
+		super();
+		this.title = title;
+	}
+
+	getState(): string {
+		return this.title;
+	}
+}
+
+class AddColumnNode extends Node {
+	title: string;
+	nodeType: string = 'sql';
 
 	constructor(title: string) {
 		super();
